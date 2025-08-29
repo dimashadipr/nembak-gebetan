@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nembak Pacar 🌠</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .heart {
+    position: fixed;
+    font-size: 1.5em;
+    animation: floatUp 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  @keyframes floatUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px) scale(1.5);
+    }
+  }
+
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    h1, p, .button-container, #response, #kata, #nextBtn {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 20px;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin: 10px;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    #kata {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    #nextBtn {
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 10px;
+      background-color: #ff1493;
+      color: white;
+      border: none;
+      cursor: pointer;
+      z-index: 1;
+      position: relative;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .button-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      height: 150px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      transition: all 0.3s ease;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    #yesBtn {
+      background-color: #ff69b4;
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 20px;
+    }
+
+    #noBtn {
+      background-color: #9370db;
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 80px;
+    }
+
+    #response {
+      margin-top: 40px;
+      font-size: 1.5em;
+      max-width: 80%;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      font-size: 2em;
+      color: #ff1493;
+    }
+
+    .modal-content p {
+      font-size: 1.2em;
+    }
+
+    .close-btn {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background-color: #ff1493;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1em;
+      position: relative;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    .close-btn::before {
+      content: "💖 ";
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px #ff69b4;
+      }
+      to {
+        box-shadow: 0 0 20px #ff1493, 0 0 30px #ff69b4;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      button {
+        font-size: 0.9em;
+        padding: 12px 24px;
+      }
+
+      #response {
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+
+  <div id="kata">Halo Dhifa</div>
+  <button id="nextBtn">Next</button>
+
+  <h1>Maukah kamu jadi pacarku? 🌠</h1>
+  <p>Di bawah langit penuh bintang, aku cuma mau bilang...</p>
+
+  <div class="button-container">
+    <button id="yesBtn">Iya!</button>
+    <button id="noBtn">Enggak 😅</button>
+  </div>
+
+  <div id="response"></div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>💖 Terima kasih!</h2>
+      <p>Kamu baru aja bikin hatiku meledak bahagia! 🌟</p>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const modal = document.getElementById('modal');
+
+    noBtn.addEventListener('mouseover', () => {
+      const container = document.querySelector('.button-container');
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    yesBtn.onclick = () => {
+      modal.style.display = "flex";
+    };
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    // Kata romantis bertahap
+    const kataList = [
+      "Aku udah lama suka kamu...",
+      "Tiap hari aku mikirin kamu...",
+      "Aku cuma mau bilang sesuatu...",
+      "Di bawah langit penuh bintang...",
+      "Maukah kamu jadi pacarku? 🌠"
+    ];
+    let kataIndex = 0;
+
+    const kataDiv = document.getElementById("kata");
+    const nextBtn = document.getElementById("nextBtn");
+
+    nextBtn.onclick = () => {
+      if (kataIndex < kataList.length) {
+        kataDiv.innerText = kataList[kataIndex];
+        kataIndex++;
+        if (kataIndex === kataList.length) {
+          nextBtn.style.display = "none";
+          document.querySelector("h1").style.display = "block";
+          document.querySelector("p").style.display = "block";
+          document.querySelector(".button-container").style.display = "block";
+        }
+      }
+    };
+
+    function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+
+    const rect = yesBtn.getBoundingClientRect();
+    heart.style.left = `${rect.left + rect.width / 2}px`;
+    heart.style.top = `${rect.top}px`;
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 2000);
+  }
+
+  // 💖 Tambahan: efek hati saat klik "Iya!"
+  yesBtn.onclick = () => {
+    modal.style.display = "flex";
+    for (let i = 0; i < 10; i++) {
+      setTimeout(createHeart, i * 150); // Efek beruntun
+    }
+  };
+
+
+    document.querySelector("h1").style.display = "none";
+    document.querySelector("p").style.display = "none";
+    document.querySelector(".button-container").style.display = "none";
+
+    // Animasi bintang jatuh
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createStar() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        speed: Math.random() * 1 + 0.5
+      };
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function animateStars() {
+      drawStars();
+      requestAnimationFrame(animateStars);
+    }
+
+    for (let i = 0; i < 100; i++) {
+      stars.push(createStar());
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+    modal.style.display = "none";
+    });
+
+
+    animateStars();
+  </script>
+</body>
+</html>
